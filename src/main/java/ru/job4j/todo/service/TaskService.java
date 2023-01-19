@@ -8,6 +8,10 @@ import ru.job4j.todo.repository.TaskRepositoryInterface;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * класс TaskService реализует интерфейс TaskServiceInterface
+ * Класс реализует бизнесс логику хранилища заданий
+ */
 @Service
 @AllArgsConstructor
 public class TaskService implements TaskServiceInterface {
