@@ -1,5 +1,6 @@
 package ru.job4j.todo.repository;
 
+import net.jcip.annotations.ThreadSafe;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import lombok.*;
@@ -10,8 +11,12 @@ import ru.job4j.todo.model.Task;
 import java.util.List;
 import java.util.Optional;
 
-
+/**
+ * Класс TaskRepository реализует интерфейс TaskRepositoryInterface
+ * Класс реализует хранилище заданий в базе данных
+ */
 @Repository
+@ThreadSafe
 @AllArgsConstructor
 public class TaskRepository implements TaskRepositoryInterface {
     private final SessionFactory sf;
@@ -25,6 +30,11 @@ public class TaskRepository implements TaskRepositoryInterface {
     private static final String FIND_DONE_FALSE = "from Task where done = false";
     private static final String FIND_DONE_TRUE = "from Task where dane = true";
 
+    /**
+     * метод добавляет задание в базу данных
+     * @param task - задание
+     * @return возвращает добавленное задание
+     */
     @Override
     public Optional<Task> add(Task task) {
         Session session = sf.openSession();
@@ -41,6 +51,11 @@ public class TaskRepository implements TaskRepositoryInterface {
         return Optional.of(task);
     }
 
+    /**
+     * метод обновляет задание в базе данных
+     * @param task - задание
+     * @return - возвращает статус выполнения операции
+     */
     @Override
     public boolean update(Task task) {
         Session session = sf.openSession();
@@ -63,6 +78,11 @@ public class TaskRepository implements TaskRepositoryInterface {
         return rsl;
     }
 
+    /**
+     * метод удаляет задание из базы данных
+     * @param id - индификатор задания
+     * @return - возвращает статус выполнения операции
+     */
     @Override
     public boolean delete(int id) {
         Session session = sf.openSession();
@@ -82,6 +102,10 @@ public class TaskRepository implements TaskRepositoryInterface {
         return rsl;
     }
 
+    /**
+     * метод находит все задания в базе данных
+     * @return список всех заданий
+     */
     @Override
     public List<Task> findAll() {
         Session session = sf.openSession();
@@ -92,6 +116,11 @@ public class TaskRepository implements TaskRepositoryInterface {
         return rsl;
     }
 
+    /**
+     * метод находит задание с указанным id
+     * @param id - индификатор задания
+     * @return - Optional с заявкой
+     */
     @Override
     public Optional<Task> findById(int id) {
         Session session = sf.openSession();
@@ -102,6 +131,10 @@ public class TaskRepository implements TaskRepositoryInterface {
         return rsl;
     }
 
+    /**
+     * метод находит все задания со статусом "выполено"
+     * @return - список заявок со статусом "выполнено"
+     */
     @Override
     public List<Task> findDoneTrue() {
         Session session = sf.openSession();
@@ -112,6 +145,10 @@ public class TaskRepository implements TaskRepositoryInterface {
         return rsl;
     }
 
+    /**
+     * метод находит все задания со статусом "не выполено"
+     * @return - список заявок со статусом "не выполнено"
+     */
     @Override
     public List<Task> findDoneFalse() {
         Session session = sf.openSession();

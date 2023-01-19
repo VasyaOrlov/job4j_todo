@@ -5,6 +5,9 @@ import ru.job4j.todo.model.Task;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * интерфейс хранилища заданий
+ */
 public interface TaskRepositoryInterface {
 
     Optional<Task> add(Task task);
