@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.*;
 import ru.job4j.todo.model.Task;
 import ru.job4j.todo.service.TaskServiceInterface;
 
+import javax.servlet.http.HttpSession;
+
+import static ru.job4j.todo.util.GetUser.getUser;
+
 /**
  * TaskController - класс контроллер,
  * отвечает за работу с заданиями
@@ -25,8 +29,9 @@ public class TaskController {
      * @return - вид со всеми заданиями в хранилище
      */
     @GetMapping("/allTask")
-    public String allTask(Model model) {
+    public String allTask(Model model, HttpSession httpSession) {
         model.addAttribute("tasks", taskService.findAll());
+        getUser(model, httpSession);
         return "allTask";
     }
 
@@ -36,8 +41,9 @@ public class TaskController {
      * @return - вид со заданиями
      */
     @GetMapping("/doneTrueTask")
-    public String doneTrueTask(Model model) {
+    public String doneTrueTask(Model model, HttpSession httpSession) {
         model.addAttribute("tasks", taskService.findDoneTrue());
+        getUser(model, httpSession);
         return "doneTrueTask";
     }
 
@@ -47,8 +53,9 @@ public class TaskController {
      * @return - вид с заданиями
      */
     @GetMapping("/doneFalseTask")
-    public String doneFalseTask(Model model) {
+    public String doneFalseTask(Model model, HttpSession httpSession) {
         model.addAttribute("tasks", taskService.findDoneFalse());
+        getUser(model, httpSession);
         return "doneFalseTask";
     }
 
@@ -59,8 +66,9 @@ public class TaskController {
      * @return - вид с заданием
      */
     @GetMapping("/viewTask/{id}")
-    public String viewTask(@PathVariable int id, Model model) {
+    public String viewTask(@PathVariable int id, Model model, HttpSession httpSession) {
         model.addAttribute("task", taskService.findById(id).get());
+        getUser(model, httpSession);
         return "viewTask";
     }
 
@@ -69,7 +77,8 @@ public class TaskController {
      * @return - вид добавления задания
      */
     @GetMapping("/addTask")
-    public String addTask() {
+    public String addTask(Model model, HttpSession httpSession) {
+        getUser(model, httpSession);
         return "addTask";
     }
 
@@ -91,8 +100,9 @@ public class TaskController {
      * @return - вид редактирования задания
      */
     @GetMapping("/updateTask/{id}")
-    public String updateTaskView(@PathVariable int id, Model model) {
+    public String updateTaskView(@PathVariable int id, Model model, HttpSession httpSession) {
         model.addAttribute("task", taskService.findById(id).get());
+        getUser(model, httpSession);
         return "updateTask";
     }
 
@@ -116,7 +126,8 @@ public class TaskController {
      * @return - вид ошибки обновления
      */
     @GetMapping("/updateTaskFail")
-    public String updateTaskFail() {
+    public String updateTaskFail(Model model, HttpSession httpSession) {
+        getUser(model, httpSession);
         return "updateTaskFail";
     }
 
@@ -125,7 +136,8 @@ public class TaskController {
      * @return - вид успешного обновления задания
      */
     @GetMapping("/updateTaskSuccess")
-    public String updateTaskSuccess() {
+    public String updateTaskSuccess(Model model, HttpSession httpSession) {
+        getUser(model, httpSession);
         return "/updateTaskSuccess";
     }
 
@@ -148,7 +160,8 @@ public class TaskController {
      * @return - вид ошибки прри удалении
      */
     @GetMapping("/deleteTaskFail")
-    public String deleteTaskFail() {
+    public String deleteTaskFail(Model model, HttpSession httpSession) {
+        getUser(model, httpSession);
         return "deleteTaskFail";
     }
 
@@ -157,7 +170,8 @@ public class TaskController {
      * @return - вид успешного удаления
      */
     @GetMapping("/deleteTaskSuccess")
-    public String deleteTaskSuccess() {
+    public String deleteTaskSuccess(Model model, HttpSession httpSession) {
+        getUser(model, httpSession);
         return "deleteTaskSuccess";
     }
 
@@ -182,7 +196,8 @@ public class TaskController {
      * @return - вид с ошибкой
      */
     @GetMapping("/doneTaskFail")
-    public String doneTaskFail() {
+    public String doneTaskFail(Model model, HttpSession httpSession) {
+        getUser(model, httpSession);
         return "doneTaskFail";
     }
 }

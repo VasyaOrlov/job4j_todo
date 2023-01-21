@@ -24,6 +24,14 @@
                 <a class="nav-item nav-link" th:href="@{/allTask}">Все задания</a>
                 <a class="nav-item nav-link" th:href="@{/doneTrueTask}">Выполненные задания</a>
                 <a class="nav-item nav-link active" href="#">Новые задания</a>
+                <a class="nav-item nav-link" th:href="@{/registration}">Регистрация</a>
+                <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/authorization}">
+                    <span th:text="${user.name}"></span>
+                    <span> | Войти</span>
+                </a>
+                <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/logout}">
+                    <span th:text="${user.name}"></span>
+                    <span> | Выйти</span>
                 </a>
             </div>
         </div>
