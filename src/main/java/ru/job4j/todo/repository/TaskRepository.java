@@ -22,13 +22,13 @@ public class TaskRepository implements TaskRepositoryInterface {
     private final SessionFactory sf;
     private static final Logger LOG = LoggerFactory.getLogger(TaskRepository.class.getName());
     private static final String UPDATE =
-            "from Task set name = :fName, description = :fDesc, "
-                    + "created = :fCreated, done = :fDone";
+            "update Task set name = :fName, description = :fDesc, "
+                    + "created = :fCreated, done = :fDone where id = :fId";
 
     private static final String DELETE = "delete Task where id =:fId";
     private static final String FIND_ALL = "from Task";
     private static final String FIND_DONE_FALSE = "from Task where done = false";
-    private static final String FIND_DONE_TRUE = "from Task where dane = true";
+    private static final String FIND_DONE_TRUE = "from Task where done = true";
 
     /**
      * метод добавляет задание в базу данных
@@ -67,6 +67,7 @@ public class TaskRepository implements TaskRepositoryInterface {
                     .setParameter("fDesc", task.getDescription())
                     .setParameter("fCreated", task.getCreated())
                     .setParameter("fDone", task.isDone())
+                    .setParameter("fId", task.getId())
                     .executeUpdate() != 0;
             session.getTransaction().commit();
             session.close();
@@ -111,7 +112,7 @@ public class TaskRepository implements TaskRepositoryInterface {
         Session session = sf.openSession();
         session.beginTransaction();
         List<Task> rsl = session.createQuery(FIND_ALL, Task.class).list();
-        session.beginTransaction().commit();
+        session.getTransaction().commit();
         session.close();
         return rsl;
     }
@@ -126,7 +127,7 @@ public class TaskRepository implements TaskRepositoryInterface {
         Session session = sf.openSession();
         session.beginTransaction();
         Optional<Task> rsl = Optional.ofNullable(session.get(Task.class, id));
-        session.beginTransaction().commit();
+        session.getTransaction().commit();
         session.close();
         return rsl;
     }
@@ -140,7 +141,7 @@ public class TaskRepository implements TaskRepositoryInterface {
         Session session = sf.openSession();
         session.beginTransaction();
         List<Task> rsl = session.createQuery(FIND_DONE_TRUE, Task.class).list();
-        session.beginTransaction().commit();
+        session.getTransaction().commit();
         session.close();
         return rsl;
     }
@@ -154,7 +155,7 @@ public class TaskRepository implements TaskRepositoryInterface {
         Session session = sf.openSession();
         session.beginTransaction();
         List<Task> rsl = session.createQuery(FIND_DONE_FALSE, Task.class).list();
-        session.beginTransaction().commit();
+        session.getTransaction().commit();
         session.close();
         return rsl;
     }
