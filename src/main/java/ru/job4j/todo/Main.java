@@ -3,6 +3,10 @@ package ru.job4j.todo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * основной класс приложения
+ * @SpringBootApplication - spring boot включит автоматическую настройку и отсканирует ресурсы в пакете
+ */
 @SpringBootApplication
 public class Main {
     public static void main(String[] args) {

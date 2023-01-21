@@ -17,36 +17,68 @@ import java.util.Optional;
 public class TaskService implements TaskServiceInterface {
     private TaskRepositoryInterface taskRepository;
 
+    /**
+     * метод добавляет задание в хранилище
+     * @param task - задание
+     * @return - Optional с добавленным заданием
+     */
     @Override
     public Optional<Task> add(Task task) {
         return taskRepository.add(task);
     }
 
+    /**
+     * метод обновляет задание в хранилище
+     * @param task - задание
+     * @return - статус операции
+     */
     @Override
     public boolean update(Task task) {
         return taskRepository.update(task);
     }
 
+    /**
+     * метод удаляет задание из хранилища по id
+     * @param id - индификатор задания
+     * @return - статус операции
+     */
     @Override
     public boolean delete(int id) {
         return taskRepository.delete(id);
     }
 
+    /**
+     * метод поиска всех заданий в хранилище
+     * @return - список заданий
+     */
     @Override
     public List<Task> findAll() {
         return taskRepository.findAll();
     }
 
+    /**
+     * метод поиска задания в хранилище по id
+     * @param id - уникальный индификатор задания
+     * @return - Optional с результатом поиска задания
+     */
     @Override
     public Optional<Task> findById(int id) {
         return taskRepository.findById(id);
     }
 
+    /**
+     * метод поиска заданий со статусом done = true
+     * @return - список заданий
+     */
     @Override
     public List<Task> findDoneTrue() {
         return taskRepository.findDoneTrue();
     }
 
+    /**
+     * метод поиска заданий со статусом done = false
+     * @return - список заданий
+     */
     @Override
     public List<Task> findDoneFalse() {
         return taskRepository.findDoneFalse();
