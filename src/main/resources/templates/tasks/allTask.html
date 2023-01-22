@@ -22,14 +22,14 @@
             <div class="collapse navbar-collapse">
                 <div class="navbar-nav me-auto">
                     <a class="nav-item nav-link active" href="#">Все задания</a>
-                    <a class="nav-item nav-link" th:href="@{/doneTrueTask}">Выполненные задания</a>
-                    <a class="nav-item nav-link" th:href="@{/doneFalseTask}">Новые задания</a>
-                    <a class="nav-item nav-link" th:href="@{/registration}">Регистрация</a>
-                    <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/authorization}">
+                    <a class="nav-item nav-link" th:href="@{/tasks/doneTrueTask}">Выполненные задания</a>
+                    <a class="nav-item nav-link" th:href="@{/tasks/doneFalseTask}">Новые задания</a>
+                    <a class="nav-item nav-link" th:href="@{/users/registration}">Регистрация</a>
+                    <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/users/authorization}">
                         <span th:text="${user.name}"></span>
                         <span> | Войти</span>
                     </a>
-                    <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/logout}">
+                    <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/users/logout}">
                         <span th:text="${user.name}"></span>
                         <span> | Выйти</span>
                     </a>
@@ -38,7 +38,7 @@
         </div>
     </nav>
     <div class="container">
-        <a type="submit" class="btn btn-success mt-1 col-12" th:href="@{/addTask}">Добавить задание</a>
+        <a type="submit" class="btn btn-success mt-1 col-12" th:href="@{/tasks/addTask}">Добавить задание</a>
         <p>
         <div class="row">
             <table class="table">
@@ -53,7 +53,7 @@
                 <tbody>
                 <tr align="center" th:each="task: ${tasks}">
                     <td th:text="${task.id}"></td>
-                    <td><a th:text="${task.name}" th:href="@{/viewTask/{id}(id=${task.id})}"></a></td>
+                    <td><a th:text="${task.name}" th:href="@{/tasks/viewTask/{id}(id=${task.id})}"></a></td>
                     <td th:text="${#temporals.format(task.created, 'dd-MM-yyyy HH:mm')}"></td>
                     <td th:if="${task.done}" style="color: green">Выполнено</td>
                     <td th:if="${!task.done}" style="color: Red">Активно</td>

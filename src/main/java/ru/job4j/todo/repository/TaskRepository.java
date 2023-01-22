@@ -27,8 +27,8 @@ public class TaskRepository implements TaskRepositoryInterface {
 
     private static final String DELETE = "delete Task where id =:fId";
     private static final String FIND_ALL = "from Task";
-    private static final String FIND_DONE_FALSE = "from Task where done = false";
-    private static final String FIND_DONE_TRUE = "from Task where done = true";
+    private static final String FIND_DONE = "from Task where done = :fDone";
+    private static final String DONE_TRUE = "update Task set done = true where id = :fId";
 
     /**
      * метод добавляет задание в базу данных
@@ -133,30 +133,43 @@ public class TaskRepository implements TaskRepositoryInterface {
     }
 
     /**
-     * метод находит все задания со статусом "выполено"
-     * @return - список заявок со статусом "выполнено"
+     * метод находит все задания со статусом done
+     * @param done - статус задания
+     * @return - список заявок
      */
     @Override
-    public List<Task> findDoneTrue() {
+    public List<Task> findByDone(boolean done) {
         Session session = sf.openSession();
         session.beginTransaction();
-        List<Task> rsl = session.createQuery(FIND_DONE_TRUE, Task.class).list();
+        List<Task> rsl = session.createQuery(FIND_DONE, Task.class)
+                .setParameter("fDone", done)
+                .list();
         session.getTransaction().commit();
         session.close();
         return rsl;
     }
 
     /**
-     * метод находит все задания со статусом "не выполено"
-     * @return - список заявок со статусом "не выполнено"
+     * метод у задания с id статус переводит на выполнено
+     * @param id - индификатор задания
+     * @return - результат операции
      */
     @Override
-    public List<Task> findDoneFalse() {
+    public boolean doneTrue(int id) {
         Session session = sf.openSession();
-        session.beginTransaction();
-        List<Task> rsl = session.createQuery(FIND_DONE_FALSE, Task.class).list();
-        session.getTransaction().commit();
-        session.close();
+        boolean rsl = false;
+        try {
+            session.beginTransaction();
+            rsl = session.createQuery(DONE_TRUE)
+                    .setParameter("fId", id)
+                    .executeUpdate() != 0;
+            session.getTransaction().commit();
+            session.close();
+        } catch (Exception e) {
+            LOG.error("Ошибка выполнения задания: " + e);
+            session.getTransaction().rollback();
+            session.close();
+        }
         return rsl;
     }
 }

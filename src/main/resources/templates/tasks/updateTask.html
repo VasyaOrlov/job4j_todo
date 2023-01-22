@@ -21,15 +21,15 @@
         <a class="navbar-brand" href="#">TODO</a>
         <div class="collapse navbar-collapse">
             <div class="navbar-nav me-auto">
-                <a class="nav-item nav-link" th:href="@{/allTask}">Все задания</a>
-                <a class="nav-item nav-link" th:href="@{/doneTrueTask}">Выполненные задания</a>
-                <a class="nav-item nav-link" th:href="@{/doneFalseTask}">Новые задания</a>
-                <a class="nav-item nav-link" th:href="@{/registration}">Регистрация</a>
-                <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/authorization}">
+                <a class="nav-item nav-link" th:href="@{/tasks/allTask}">Все задания</a>
+                <a class="nav-item nav-link" th:href="@{/tasks/doneTrueTask}">Выполненные задания</a>
+                <a class="nav-item nav-link" th:href="@{/tasks/doneFalseTask}">Новые задания</a>
+                <a class="nav-item nav-link" th:href="@{/users/registration}">Регистрация</a>
+                <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/users/authorization}">
                     <span th:text="${user.name}"></span>
                     <span> | Войти</span>
                 </a>
-                <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/logout}">
+                <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/users/logout}">
                     <span th:text="${user.name}"></span>
                     <span> | Выйти</span>
                 </a>
@@ -44,7 +44,7 @@
                 Редактирование задания.
             </div>
             <div class="card-body">
-                <form th:action="@{/updateTask}" method="POST" th:object="${task}">
+                <form th:action="@{/tasks/updateTask}" method="POST" th:object="${task}">
                     <input type="hidden" name="id" th:field="*{id}"/>
                     <div class="form-group">
                         <label style="width: 100%">Название задания
@@ -63,7 +63,7 @@
                     <p></p>
                     <div class="row">
                         <div class="col-3">
-                            <a class="btn btn-danger w-100" th:href="@{/allTask}">Отмена</a>
+                            <a class="btn btn-danger w-100" th:href="@{/tasks/allTask}">Отмена</a>
                         </div>
                         <div class="col-3">
                             <button class="btn btn-primary w-120" type="submit">Обновить задание</button>

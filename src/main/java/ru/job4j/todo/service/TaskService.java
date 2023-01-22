@@ -67,20 +67,22 @@ public class TaskService implements TaskServiceInterface {
     }
 
     /**
-     * метод поиска заданий со статусом done = true
+     * метод поиска заданий со статусом done
+     * @param done - статус у задания
      * @return - список заданий
      */
     @Override
-    public List<Task> findDoneTrue() {
-        return taskRepository.findDoneTrue();
+    public List<Task> findByDone(boolean done) {
+        return taskRepository.findByDone(done);
     }
 
     /**
-     * метод поиска заданий со статусом done = false
-     * @return - список заданий
+     * метод у задания с id статус переводит на выполнено
+     * @param id - индификатор задания
+     * @return - результат операции
      */
     @Override
-    public List<Task> findDoneFalse() {
-        return taskRepository.findDoneFalse();
+    public boolean doneTrue(int id) {
+        return taskRepository.doneTrue(id);
     }
 }

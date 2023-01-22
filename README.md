@@ -36,7 +36,21 @@
 - Java 17
 - Maven 3.8
 - PostgreSQL 14
-- 
+
+# Запуск проекта
+1. Создать базу данных todo:
+```shell
+   create database todo
+```
+2. Запустить проект:
+```shell
+mvn spring-boot run
+```
+3. Перейти по адресу:
+```shell
+3. http://localhost:8080/allTask
+```
+
 # # Взаимодействие с приложением
 #### Страница со всеми заданиями
 ![](img/allTask.png)

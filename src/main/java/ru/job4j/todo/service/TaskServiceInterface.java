@@ -14,6 +14,6 @@ public interface TaskServiceInterface {
     boolean delete(int id);
     List<Task> findAll();
     Optional<Task> findById(int id);
-    List<Task> findDoneTrue();
-    List<Task> findDoneFalse();
+    List<Task> findByDone(boolean done);
+    boolean doneTrue(int id);
 }

@@ -21,15 +21,15 @@
         <a class="navbar-brand" href="#">TODO</a>
         <div class="collapse navbar-collapse">
             <div class="navbar-nav me-auto">
-                <a class="nav-item nav-link" th:href="@{/allTask}">Все задания</a>
-                <a class="nav-item nav-link" th:href="@{/doneTrueTask}">Выполненные задания</a>
-                <a class="nav-item nav-link" th:href="@{/doneFalseTask}">Новые задания</a>
-                <a class="nav-item nav-link" th:href="@{/registration}">Регистрация</a>
-                <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/authorization}">
+                <a class="nav-item nav-link" th:href="@{/tasks/allTask}">Все задания</a>
+                <a class="nav-item nav-link" th:href="@{/tasks/doneTrueTask}">Выполненные задания</a>
+                <a class="nav-item nav-link" th:href="@{/tasks/doneFalseTask}">Новые задания</a>
+                <a class="nav-item nav-link" th:href="@{/users/registration}">Регистрация</a>
+                <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/users/authorization}">
                     <span th:text="${user.name}"></span>
                     <span> | Войти</span>
                 </a>
-                <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/logout}">
+                <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/users/logout}">
                     <span th:text="${user.name}"></span>
                     <span> | Выйти</span>
                 </a>
@@ -70,13 +70,13 @@
     </div>
     <div class="row">
         <div class="col-2">
-            <a class="btn btn-light w-100" th:href="@{/updateTask/{id}(id=${task.id})}">Редактировать</a>
+            <a class="btn btn-light w-100" th:href="@{/tasks/updateTask/{id}(id=${task.id})}">Редактировать</a>
         </div>
         <div class="col-2">
-            <a class="btn btn-success w-100" th:href="@{/doneTask/{id}(id=${task.id})}">Выполнено</a>
+            <a class="btn btn-success w-100" th:href="@{/tasks/doneTask/{id}(id=${task.id})}">Выполнено</a>
         </div>
         <div class="col-2">
-            <a class="btn btn-danger w-100" th:href="@{/deleteTask/{id}(id=${task.id})}">Удалить</a>
+            <a class="btn btn-danger w-100" th:href="@{/tasks/deleteTask/{id}(id=${task.id})}">Удалить</a>
         </div>
     </div>
 </div>

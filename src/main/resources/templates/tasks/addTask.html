@@ -21,15 +21,15 @@
         <a class="navbar-brand" href="#">TODO</a>
         <div class="collapse navbar-collapse">
             <div class="navbar-nav me-auto">
-                <a class="nav-item nav-link" th:href="@{/allTask}">Все задания</a>
-                <a class="nav-item nav-link" th:href="@{/doneTrueTask}">Выполненные задания</a>
-                <a class="nav-item nav-link" th:href="@{/doneFalseTask}">Новые задания</a>
-                <a class="nav-item nav-link" th:href="@{/registration}">Регистрация</a>
-                <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/authorization}">
+                <a class="nav-item nav-link" th:href="@{/tasks/allTask}">Все задания</a>
+                <a class="nav-item nav-link" th:href="@{/tasks/doneTrueTask}">Выполненные задания</a>
+                <a class="nav-item nav-link" th:href="@{/tasks/doneFalseTask}">Новые задания</a>
+                <a class="nav-item nav-link" th:href="@{/users/registration}">Регистрация</a>
+                <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/users/authorization}">
                     <span th:text="${user.name}"></span>
                     <span> | Войти</span>
                 </a>
-                <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/logout}">
+                <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/users/logout}">
                     <span th:text="${user.name}"></span>
                     <span> | Выйти</span>
                 </a>
@@ -43,7 +43,7 @@
             Новое задание.
         </div>
         <div class="card-body">
-            <form th:action="@{/createTask}" method="POST">
+            <form th:action="@{/tasks/createTask}" method="POST">
                 <input type="hidden" name="id" value="0"/>
                 <div class="form-group">
                     <label style="width: 100%">Название задания
