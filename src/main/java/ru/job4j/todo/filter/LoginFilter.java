@@ -34,7 +34,7 @@ public class LoginFilter implements Filter {
             return;
         }
         if (req.getSession().getAttribute("user") == null) {
-            res.sendRedirect(req.getContextPath() + "/authorization");
+            res.sendRedirect(req.getContextPath() + "/users/authorization");
             return;
         }
         filterChain.doFilter(req, res);

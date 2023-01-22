@@ -21,15 +21,15 @@
         <a class="navbar-brand" href="#">TODO</a>
         <div class="collapse navbar-collapse">
             <div class="navbar-nav me-auto">
-                <a class="nav-item nav-link" th:href="@{/allTask}">Все задания</a>
-                <a class="nav-item nav-link" th:href="@{/doneTrueTask}">Выполненные задания</a>
-                <a class="nav-item nav-link" th:href="@{/doneFalseTask}">Новые задания</a>
-                <a class="nav-item nav-link" th:href="@{/registration}">Регистрация</a>
-                <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/authorization}">
+                <a class="nav-item nav-link" th:href="@{/tasks/allTask}">Все задания</a>
+                <a class="nav-item nav-link" th:href="@{/tasks/doneTrueTask}">Выполненные задания</a>
+                <a class="nav-item nav-link" th:href="@{/tasks/doneFalseTask}">Новые задания</a>
+                <a class="nav-item nav-link" th:href="@{/users/registration}">Регистрация</a>
+                <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/users/authorization}">
                     <span th:text="${user.name}"></span>
                     <span> | Войти</span>
                 </a>
-                <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/logout}">
+                <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/users/logout}">
                     <span th:text="${user.name}"></span>
                     <span> | Выйти</span>
                 </a>
@@ -38,7 +38,29 @@
     </div>
 </nav>
 <div class="container">
-    <p3>Пользователь зарегистрирован!</p3>
+    <div class="row">
+        <div class="card" style="width: 100%">
+            <div class="card-header">
+                Авторизация
+            </div>
+            <div class="card-body">
+                <div class="mb-3" th:if="${error}">
+                    <p class="text-danger" th:text="${error}"></p>
+                </div>
+                <form th:action="@{/users/login}" method="POST">
+                    <div class="form-group">
+                        <label>Login</label>
+                        <input type="text" class="form-control" name="login">
+                    </div>
+                    <div class="form-group">
+                        <label>Пароль</label>
+                        <input type="text" class="form-control" name="password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Войти</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
