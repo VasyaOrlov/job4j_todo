@@ -13,7 +13,7 @@
             integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <title>Выполненные задания</title>
+    <title>Задание</title>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -21,9 +21,9 @@
         <a class="navbar-brand" href="#">TODO</a>
         <div class="collapse navbar-collapse">
             <div class="navbar-nav me-auto">
-                <a class="nav-item nav-link" th:href="@{/tasks/allTask}">Все задания</a>
-                <a class="nav-item nav-link active" href="#">Выполненные задания</a>
-                <a class="nav-item nav-link" th:href="@{/tasks/doneFalseTask}">Новые задания</a>
+                <a class="nav-item nav-link" th:href="@{/tasks/all}">Все задания</a>
+                <a class="nav-item nav-link" th:href="@{/tasks/doneTrue}">Выполненные задания</a>
+                <a class="nav-item nav-link" th:href="@{/tasks/doneFalse}">Новые задания</a>
                 <a class="nav-item nav-link" th:href="@{/users/registration}">Регистрация</a>
                 <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/users/authorization}">
                     <span th:text="${user.name}"></span>
@@ -38,28 +38,46 @@
     </div>
 </nav>
 <div class="container">
-    <a type="submit" class="btn btn-success mt-1 col-12" th:href="@{/tasks/addTask}">Добавить задание</a>
-    <p>
     <div class="row">
         <table class="table">
-            <thead>
-            <tr align="center">
-                <th scope="col">#</th>
-                <th scope="col">Название</th>
-                <th scope="col">Дата создания</th>
-                <th scope="col">Статус</th>
-            </tr>
-            </thead>
             <tbody>
-            <tr align="center" th:each="task: ${tasks}">
-                <td th:text="${task.id}"></td>
-                <td><a th:text="${task.name}" th:href="@{/tasks/viewTask/{id}(id=${task.id})}"></a></td>
-                <td th:text="${#temporals.format(task.created, 'dd-MM-yyyy HH:mm')}"></td>
-                <td th:if="${task.done}" style="color: green">Выполнено</td>
-                <td th:if="${!task.done}" style="color: Red">Активно</td>
-            </tr>
+                <tr>
+                    <th>Название задачи</th>
+                    <td th:text="${task.name}"></td>
+                </tr>
+                <tr>
+                    <th>Описание задачи</th>
+                    <td th:text="${task.description}"></td>
+                </tr>
+                <tr>
+                    <th>Статус задачи/выполение</th>
+                    <td>
+                        <span th:if="${task.done}">
+                        <p style="color: green">Выполнено</p>
+                        </span>
+                        <span th:if="${!task.done}">
+                        <p style="color: Red">Активно</p>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Дата создания</th>
+                    <td th:text="${#temporals.format(task.created, 'dd-MM-yyyy HH:mm')}"></td>
+                </tr>
+
             </tbody>
         </table>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <a class="btn btn-light w-100" th:href="@{/tasks/update/{id}(id=${task.id})}">Редактировать</a>
+        </div>
+        <div class="col-2">
+            <a class="btn btn-success w-100" th:href="@{/tasks/done/{id}(id=${task.id})}">Выполнено</a>
+        </div>
+        <div class="col-2">
+            <a class="btn btn-danger w-100" th:href="@{/tasks/delete/{id}(id=${task.id})}">Удалить</a>
+        </div>
     </div>
 </div>
 </body>

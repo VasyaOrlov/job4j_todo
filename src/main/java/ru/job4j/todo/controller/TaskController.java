@@ -30,11 +30,12 @@ public class TaskController {
      * @param httpSession - объект связанный с работой пользователя
      * @return - вид со всеми заданиями в хранилище
      */
-    @GetMapping("/allTask")
-    public String allTask(Model model, HttpSession httpSession) {
+    @GetMapping("/all")
+    public String all(Model model, HttpSession httpSession) {
         model.addAttribute("tasks", taskService.findAll());
+        model.addAttribute("header", "Все задания");
         getUser(model, httpSession);
-        return "tasks/allTask";
+        return "tasks/all";
     }
 
     /**
@@ -43,11 +44,12 @@ public class TaskController {
      * @param httpSession - объект связанный с работой пользователя
      * @return - вид со заданиями
      */
-    @GetMapping("/doneTrueTask")
-    public String doneTrueTask(Model model, HttpSession httpSession) {
+    @GetMapping("/doneTrue")
+    public String doneTrue(Model model, HttpSession httpSession) {
         model.addAttribute("tasks", taskService.findByDone(true));
+        model.addAttribute("header", "Выполненные задания");
         getUser(model, httpSession);
-        return "tasks/doneTrueTask";
+        return "tasks/all";
     }
 
     /**
@@ -56,11 +58,12 @@ public class TaskController {
      * @param httpSession - объект связанный с работой пользователя
      * @return - вид с заданиями
      */
-    @GetMapping("/doneFalseTask")
-    public String doneFalseTask(Model model, HttpSession httpSession) {
+    @GetMapping("/doneFalse")
+    public String doneFalse(Model model, HttpSession httpSession) {
         model.addAttribute("tasks", taskService.findByDone(false));
+        model.addAttribute("header", "Актуальные задания");
         getUser(model, httpSession);
-        return "tasks/doneFalseTask";
+        return "tasks/all";
     }
 
     /**
@@ -70,8 +73,8 @@ public class TaskController {
      * @param httpSession - объект связанный с работой пользователя
      * @return - вид с заданием
      */
-    @GetMapping("/viewTask/{id}")
-    public String viewTask(@PathVariable int id, Model model, HttpSession httpSession) {
+    @GetMapping("/view/{id}")
+    public String view(@PathVariable int id, Model model, HttpSession httpSession) {
         try {
             model.addAttribute("task", taskService.findById(id).get());
         } catch (Exception e) {
@@ -79,7 +82,7 @@ public class TaskController {
             return "redirect:/tasks/showMessage";
         }
         getUser(model, httpSession);
-        return "tasks/viewTask";
+        return "tasks/view";
     }
 
     /**
@@ -88,10 +91,10 @@ public class TaskController {
      * @param httpSession - объект связанный с работой пользователя
      * @return - вид добавления задания
      */
-    @GetMapping("/addTask")
-    public String addTask(Model model, HttpSession httpSession) {
+    @GetMapping("/add")
+    public String add(Model model, HttpSession httpSession) {
         getUser(model, httpSession);
-        return "tasks/addTask";
+        return "tasks/add";
     }
 
     /**
@@ -99,10 +102,10 @@ public class TaskController {
      * @param task - задание
      * @return - вид со всеми заданиями
      */
-    @PostMapping("/createTask")
-    public String createTask(@ModelAttribute Task task) {
+    @PostMapping("/create")
+    public String create(@ModelAttribute Task task) {
         taskService.add(task);
-        return "redirect:/tasks/allTask";
+        return "redirect:/tasks/all";
     }
 
     /**
@@ -112,8 +115,8 @@ public class TaskController {
      * @param httpSession - объект связанный с работой пользователя
      * @return - вид редактирования задания
      */
-    @GetMapping("/updateTask/{id}")
-    public String updateTaskView(@PathVariable int id, Model model, HttpSession httpSession) {
+    @GetMapping("/update/{id}")
+    public String updateView(@PathVariable int id, Model model, HttpSession httpSession) {
         try {
             model.addAttribute("task", taskService.findById(id).get());
         } catch (Exception e) {
@@ -121,7 +124,7 @@ public class TaskController {
             return "redirect:/tasks/showMessage";
         }
         getUser(model, httpSession);
-        return "tasks/updateTask";
+        return "tasks/update";
     }
 
     /**
@@ -130,7 +133,7 @@ public class TaskController {
      * @param httpSession - объект связанный с работой пользователя
      * @return - вид с результатом обновления
      */
-    @PostMapping("/updateTask")
+    @PostMapping("/update")
     public String updateTask(@ModelAttribute Task task, HttpSession httpSession) {
         System.out.println(task.isDone());
         boolean rsl = taskService.update(task);
@@ -148,8 +151,8 @@ public class TaskController {
      * @param httpSession - объект связанный с работой пользователя
      * @return - вид со статусом операции удаления
      */
-    @GetMapping("/deleteTask/{id}")
-    public String deleteTask(@PathVariable int id, HttpSession httpSession) {
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable int id, HttpSession httpSession) {
         boolean rsl = taskService.delete(id);
         if (!rsl) {
             httpSession.setAttribute("message", "Ошибка при удалении задания!");
@@ -165,13 +168,13 @@ public class TaskController {
      * @param httpSession - объект связанный с работой пользователя
      * @return - вид
      */
-    @GetMapping("/doneTask/{id}")
-    public String doneTask(@PathVariable int id, HttpSession httpSession) {
+    @GetMapping("/done/{id}")
+    public String done(@PathVariable int id, HttpSession httpSession) {
         if (!taskService.doneTrue(id)) {
             httpSession.setAttribute("message", "Ошибка при выполнении задания!");
             return "redirect:/tasks/showMessage";
         }
-        return "redirect:/tasks/allTask";
+        return "redirect:/tasks/all";
     }
 
     /**

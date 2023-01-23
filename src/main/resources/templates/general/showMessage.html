@@ -21,9 +21,9 @@
         <a class="navbar-brand" href="#">TODO</a>
         <div class="collapse navbar-collapse">
             <div class="navbar-nav me-auto">
-                <a class="nav-item nav-link" th:href="@{/tasks/allTask}">Все задания</a>
-                <a class="nav-item nav-link" th:href="@{/tasks/doneTrueTask}">Выполненные задания</a>
-                <a class="nav-item nav-link" th:href="@{/tasks/doneFalseTask}">Новые задания</a>
+                <a class="nav-item nav-link" th:href="@{/tasks/all}">Все задания</a>
+                <a class="nav-item nav-link" th:href="@{/tasks/doneTrue}">Выполненные задания</a>
+                <a class="nav-item nav-link" th:href="@{/tasks/doneFalse}">Новые задания</a>
                 <a class="nav-item nav-link" th:href="@{/users/registration}">Регистрация</a>
                 <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/users/authorization}">
                     <span th:text="${user.name}"></span>

@@ -21,9 +21,9 @@
             <a class="navbar-brand" href="#">TODO</a>
             <div class="collapse navbar-collapse">
                 <div class="navbar-nav me-auto">
-                    <a class="nav-item nav-link active" href="#">Все задания</a>
-                    <a class="nav-item nav-link" th:href="@{/tasks/doneTrueTask}">Выполненные задания</a>
-                    <a class="nav-item nav-link" th:href="@{/tasks/doneFalseTask}">Новые задания</a>
+                    <a class="nav-item nav-link" th:href="@{/tasks/all}">Все задания</a>
+                    <a class="nav-item nav-link" th:href="@{/tasks/doneTrue}">Выполненные задания</a>
+                    <a class="nav-item nav-link" th:href="@{/tasks/doneFalse}">Новые задания</a>
                     <a class="nav-item nav-link" th:href="@{/users/registration}">Регистрация</a>
                     <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/users/authorization}">
                         <span th:text="${user.name}"></span>
@@ -38,8 +38,10 @@
         </div>
     </nav>
     <div class="container">
-        <a type="submit" class="btn btn-success mt-1 col-12" th:href="@{/tasks/addTask}">Добавить задание</a>
-        <p>
+        <a type="submit" class="btn btn-success mt-1 col-12" th:href="@{/tasks/add}">Добавить задание</a>
+        <p></p>
+            <p3 th:text="${header}"></p3>
+        <p></p>
         <div class="row">
             <table class="table">
                 <thead>
@@ -53,7 +55,7 @@
                 <tbody>
                 <tr align="center" th:each="task: ${tasks}">
                     <td th:text="${task.id}"></td>
-                    <td><a th:text="${task.name}" th:href="@{/tasks/viewTask/{id}(id=${task.id})}"></a></td>
+                    <td><a th:text="${task.name}" th:href="@{/tasks/view/{id}(id=${task.id})}"></a></td>
                     <td th:text="${#temporals.format(task.created, 'dd-MM-yyyy HH:mm')}"></td>
                     <td th:if="${task.done}" style="color: green">Выполнено</td>
                     <td th:if="${!task.done}" style="color: Red">Активно</td>

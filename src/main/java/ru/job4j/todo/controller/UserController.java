@@ -80,7 +80,7 @@ public class UserController {
             return "users/authorization";
         }
         httpSession.setAttribute("user", temp.get());
-        return "redirect:/tasks/allTask";
+        return "redirect:/tasks/all";
     }
 
     /**
