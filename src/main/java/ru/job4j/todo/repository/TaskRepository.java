@@ -42,10 +42,10 @@ public class TaskRepository implements TaskRepositoryInterface {
             session.beginTransaction();
             session.save(task);
             session.getTransaction().commit();
-            session.close();
         } catch (Exception e) {
             LOG.error("Ошибка добавления задачи: " + e);
             session.getTransaction().rollback();
+        } finally {
             session.close();
         }
         return Optional.of(task);
@@ -70,10 +70,10 @@ public class TaskRepository implements TaskRepositoryInterface {
                     .setParameter("fId", task.getId())
                     .executeUpdate() != 0;
             session.getTransaction().commit();
-            session.close();
         } catch (Exception e) {
             LOG.error("Ошибка изменения задачи: " + e);
             session.getTransaction().rollback();
+        } finally {
             session.close();
         }
         return rsl;
@@ -94,10 +94,10 @@ public class TaskRepository implements TaskRepositoryInterface {
                     .setParameter("fId", id)
                     .executeUpdate() != 0;
             session.getTransaction().commit();
-            session.close();
         } catch (Exception e) {
             LOG.error("Ошибка изменения задачи: " + e);
             session.getTransaction().rollback();
+        } finally {
             session.close();
         }
         return rsl;
@@ -164,10 +164,10 @@ public class TaskRepository implements TaskRepositoryInterface {
                     .setParameter("fId", id)
                     .executeUpdate() != 0;
             session.getTransaction().commit();
-            session.close();
         } catch (Exception e) {
             LOG.error("Ошибка выполнения задания: " + e);
             session.getTransaction().rollback();
+        } finally {
             session.close();
         }
         return rsl;

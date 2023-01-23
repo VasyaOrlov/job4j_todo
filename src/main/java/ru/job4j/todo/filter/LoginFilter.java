@@ -11,7 +11,7 @@ import java.util.Set;
 public class LoginFilter implements Filter {
 
     private final Set<String> url = Set.of("login", "authorization",
-            "registration", "addUserFail", "addUserSuccess", "addUser");
+            "registration", "addUser", "showMessage");
 
     /**
      * метод пропускает через себя запрос к сервлетам

@@ -35,12 +35,12 @@ public class UserRepository implements UserRepositoryInterface {
             session.beginTransaction();
             session.save(user);
             session.getTransaction().commit();
-            session.close();
         } catch (Exception e) {
             session.getTransaction().rollback();
-            session.close();
             LOG.error("Ошибка добавления нового пользователя" + e);
             return Optional.empty();
+        } finally {
+            session.close();
         }
         return Optional.of(user);
     }
