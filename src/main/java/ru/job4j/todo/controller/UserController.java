@@ -93,17 +93,4 @@ public class UserController {
         httpSession.invalidate();
         return "redirect:/users/authorization";
     }
-
-    /**
-     * метод возвращает вид с сообщением
-     * @param model - модель данных
-     * @param httpSession - объект связанный с работой пользователя
-     * @return - вид с сообщением
-     */
-    @GetMapping("/showMessage")
-    public String showMessage(Model model, HttpSession httpSession) {
-        getUser(model, httpSession);
-        model.addAttribute("message", httpSession.getAttribute("message"));
-        return "general/showMessage";
-    }
 }

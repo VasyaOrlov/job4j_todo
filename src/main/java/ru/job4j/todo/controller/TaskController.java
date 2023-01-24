@@ -10,6 +10,8 @@ import ru.job4j.todo.service.TaskServiceInterface;
 
 import javax.servlet.http.HttpSession;
 
+import java.util.Optional;
+
 import static ru.job4j.todo.util.GetUser.getUser;
 
 /**
@@ -103,8 +105,11 @@ public class TaskController {
      * @return - вид со всеми заданиями
      */
     @PostMapping("/create")
-    public String create(@ModelAttribute Task task) {
-        taskService.add(task);
+    public String create(@ModelAttribute Task task, HttpSession httpSession) {
+        if (taskService.add(task).isEmpty()) {
+            httpSession.setAttribute("message", "Ошибка при добавлении задания!");
+            return "redirect:/tasks/showMessage";
+        }
         return "redirect:/tasks/all";
     }
 

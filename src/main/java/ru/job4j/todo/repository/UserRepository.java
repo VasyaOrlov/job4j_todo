@@ -31,18 +31,19 @@ public class UserRepository implements UserRepositoryInterface {
     @Override
     public Optional<User> add(User user) {
         Session session = sf.openSession();
+        Optional<User> rsl = Optional.empty();
         try {
             session.beginTransaction();
             session.save(user);
             session.getTransaction().commit();
+            rsl = Optional.of(user);
         } catch (Exception e) {
             session.getTransaction().rollback();
             LOG.error("Ошибка добавления нового пользователя" + e);
-            return Optional.empty();
         } finally {
             session.close();
         }
-        return Optional.of(user);
+        return rsl;
     }
 
     /**

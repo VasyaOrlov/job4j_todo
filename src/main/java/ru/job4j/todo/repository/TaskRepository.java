@@ -38,17 +38,19 @@ public class TaskRepository implements TaskRepositoryInterface {
     @Override
     public Optional<Task> add(Task task) {
         Session session = sf.openSession();
+        Optional<Task> rsl = Optional.empty();
         try {
             session.beginTransaction();
             session.save(task);
             session.getTransaction().commit();
+            rsl = Optional.of(task);
         } catch (Exception e) {
             LOG.error("Ошибка добавления задачи: " + e);
             session.getTransaction().rollback();
         } finally {
             session.close();
         }
-        return Optional.of(task);
+        return rsl;
     }
 
     /**
