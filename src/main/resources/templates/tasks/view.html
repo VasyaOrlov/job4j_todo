@@ -64,7 +64,10 @@
                     <th>Дата создания</th>
                     <td th:text="${#temporals.format(task.created, 'dd-MM-yyyy HH:mm')}"></td>
                 </tr>
-
+                <tr>
+                    <th>Автор задания</th>
+                    <td th:text="${task.user.name}"></td>
+                </tr>
             </tbody>
         </table>
     </div>

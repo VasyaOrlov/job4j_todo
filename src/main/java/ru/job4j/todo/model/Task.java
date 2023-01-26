@@ -8,19 +8,18 @@ import java.time.LocalDateTime;
 @Table(name = "tasks")
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    @NonNull
     private int id;
-    @NonNull
     private String name;
-    @NonNull
     private String description;
     private LocalDateTime created = LocalDateTime.now();
-    @NonNull
     private boolean done;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }
