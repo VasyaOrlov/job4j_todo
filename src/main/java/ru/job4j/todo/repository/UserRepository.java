@@ -2,12 +2,11 @@ package ru.job4j.todo.repository;
 
 import lombok.AllArgsConstructor;
 import net.jcip.annotations.ThreadSafe;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.todo.model.User;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -19,7 +18,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserRepository implements UserRepositoryInterface {
 
-    private final SessionFactory sf;
+    private final CRUDRepositoryInterface crudRepository;
     private static final Logger LOG = LoggerFactory.getLogger(UserRepository.class.getName());
     private static final String FIND_BY_LOGIN_PASSWORD = "from User where login = :fLogin and password = :fPassword";
 
@@ -30,18 +29,13 @@ public class UserRepository implements UserRepositoryInterface {
      */
     @Override
     public Optional<User> add(User user) {
-        Session session = sf.openSession();
         Optional<User> rsl = Optional.empty();
         try {
-            session.beginTransaction();
-            session.save(user);
-            session.getTransaction().commit();
+            crudRepository.optional(session -> session.save(user));
             rsl = Optional.of(user);
         } catch (Exception e) {
-            session.getTransaction().rollback();
             LOG.error("Ошибка добавления нового пользователя" + e);
-        } finally {
-            session.close();
+            System.out.println("Ошибка добавления нового пользователя");
         }
         return rsl;
     }
@@ -54,14 +48,8 @@ public class UserRepository implements UserRepositoryInterface {
      */
     @Override
     public Optional<User> findByLoginAndPassword(String login, String password) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        Optional<User> user = session.createQuery(FIND_BY_LOGIN_PASSWORD, User.class)
-                .setParameter("fLogin", login)
-                .setParameter("fPassword", password)
-                .uniqueResultOptional();
-        session.getTransaction().commit();
-        session.close();
-        return user;
+        return crudRepository.optional(FIND_BY_LOGIN_PASSWORD,
+                User.class,
+                Map.of("fLogin", login, "fPassword", password));
     }
 }

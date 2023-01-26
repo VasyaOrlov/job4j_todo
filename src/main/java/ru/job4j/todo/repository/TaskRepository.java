@@ -1,14 +1,13 @@
 package ru.job4j.todo.repository;
 
 import net.jcip.annotations.ThreadSafe;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import lombok.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.todo.model.Task;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -19,7 +18,8 @@ import java.util.Optional;
 @ThreadSafe
 @AllArgsConstructor
 public class TaskRepository implements TaskRepositoryInterface {
-    private final SessionFactory sf;
+
+    private CRUDRepositoryInterface crudRepository;
     private static final Logger LOG = LoggerFactory.getLogger(TaskRepository.class.getName());
     private static final String UPDATE =
             "update Task set name = :fName, description = :fDesc, "
@@ -37,18 +37,12 @@ public class TaskRepository implements TaskRepositoryInterface {
      */
     @Override
     public Optional<Task> add(Task task) {
-        Session session = sf.openSession();
         Optional<Task> rsl = Optional.empty();
         try {
-            session.beginTransaction();
-            session.save(task);
-            session.getTransaction().commit();
+            crudRepository.optional(session -> session.save(task));
             rsl = Optional.of(task);
         } catch (Exception e) {
-            LOG.error("Ошибка добавления задачи: " + e);
-            session.getTransaction().rollback();
-        } finally {
-            session.close();
+            LOG.error("Ошибка добавления нового задания" + e);
         }
         return rsl;
     }
@@ -60,23 +54,17 @@ public class TaskRepository implements TaskRepositoryInterface {
      */
     @Override
     public boolean update(Task task) {
-        Session session = sf.openSession();
         boolean rsl = false;
         try {
-            session.beginTransaction();
-            rsl = session.createQuery(UPDATE)
-                    .setParameter("fName", task.getName())
-                    .setParameter("fDesc", task.getDescription())
-                    .setParameter("fCreated", task.getCreated())
-                    .setParameter("fDone", task.isDone())
-                    .setParameter("fId", task.getId())
-                    .executeUpdate() != 0;
-            session.getTransaction().commit();
+            rsl = crudRepository.total(UPDATE, Map.of(
+                    "fName", task.getName(),
+                    "fDesc", task.getDescription(),
+                    "fCreated", task.getCreated(),
+                    "fDone", task.isDone(),
+                    "fId", task.getId()
+            ));
         } catch (Exception e) {
             LOG.error("Ошибка изменения задачи: " + e);
-            session.getTransaction().rollback();
-        } finally {
-            session.close();
         }
         return rsl;
     }
@@ -88,19 +76,11 @@ public class TaskRepository implements TaskRepositoryInterface {
      */
     @Override
     public boolean delete(int id) {
-        Session session = sf.openSession();
         boolean rsl = false;
         try {
-            session.beginTransaction();
-            rsl = session.createQuery(DELETE)
-                    .setParameter("fId", id)
-                    .executeUpdate() != 0;
-            session.getTransaction().commit();
+            rsl = crudRepository.total(DELETE, Map.of("fId", id));
         } catch (Exception e) {
-            LOG.error("Ошибка изменения задачи: " + e);
-            session.getTransaction().rollback();
-        } finally {
-            session.close();
+            LOG.error("Ошибка удаления задачи: " + e);
         }
         return rsl;
     }
@@ -111,12 +91,7 @@ public class TaskRepository implements TaskRepositoryInterface {
      */
     @Override
     public List<Task> findAll() {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        List<Task> rsl = session.createQuery(FIND_ALL, Task.class).list();
-        session.getTransaction().commit();
-        session.close();
-        return rsl;
+        return crudRepository.list(FIND_ALL, Task.class);
     }
 
     /**
@@ -126,12 +101,7 @@ public class TaskRepository implements TaskRepositoryInterface {
      */
     @Override
     public Optional<Task> findById(int id) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        Optional<Task> rsl = Optional.ofNullable(session.get(Task.class, id));
-        session.getTransaction().commit();
-        session.close();
-        return rsl;
+        return crudRepository.optional(Task.class, id);
     }
 
     /**
@@ -141,14 +111,7 @@ public class TaskRepository implements TaskRepositoryInterface {
      */
     @Override
     public List<Task> findByDone(boolean done) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        List<Task> rsl = session.createQuery(FIND_DONE, Task.class)
-                .setParameter("fDone", done)
-                .list();
-        session.getTransaction().commit();
-        session.close();
-        return rsl;
+        return crudRepository.list(FIND_DONE, Task.class, Map.of("fDone", done));
     }
 
     /**
@@ -158,19 +121,11 @@ public class TaskRepository implements TaskRepositoryInterface {
      */
     @Override
     public boolean doneTrue(int id) {
-        Session session = sf.openSession();
         boolean rsl = false;
         try {
-            session.beginTransaction();
-            rsl = session.createQuery(DONE_TRUE)
-                    .setParameter("fId", id)
-                    .executeUpdate() != 0;
-            session.getTransaction().commit();
+            rsl = crudRepository.total(DONE_TRUE, Map.of("fId", id));
         } catch (Exception e) {
             LOG.error("Ошибка выполнения задания: " + e);
-            session.getTransaction().rollback();
-        } finally {
-            session.close();
         }
         return rsl;
     }
