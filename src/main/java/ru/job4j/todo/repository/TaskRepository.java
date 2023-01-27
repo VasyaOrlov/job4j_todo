@@ -26,8 +26,9 @@ public class TaskRepository implements TaskRepositoryInterface {
                     + "created = :fCreated, done = :fDone where id = :fId";
 
     private static final String DELETE = "delete Task where id =:fId";
-    private static final String FIND_ALL = "from Task";
-    private static final String FIND_DONE = "from Task where done = :fDone";
+    private static final String FIND_BY_ID = "from Task f JOIN FETCH f.priority where f.id = :fId";
+    private static final String FIND_ALL = "from Task f JOIN FETCH f.priority";
+    private static final String FIND_DONE = "from Task f JOIN FETCH f.priority where done = :fDone";
     private static final String DONE_TRUE = "update Task set done = true where id = :fId";
 
     /**
@@ -101,7 +102,8 @@ public class TaskRepository implements TaskRepositoryInterface {
      */
     @Override
     public Optional<Task> findById(int id) {
-        return crudRepository.optional(Task.class, id);
+        return crudRepository.optional(FIND_BY_ID, Task.class, Map.of("fId", id));
+        //return crudRepository.optional(Task.class, id);
     }
 
     /**

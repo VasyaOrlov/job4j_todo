@@ -42,12 +42,16 @@
         <table class="table">
             <tbody>
                 <tr>
-                    <th>Название задачи</th>
+                    <th style="width: 30%">Название задачи</th>
                     <td th:text="${task.name}"></td>
                 </tr>
                 <tr>
                     <th>Описание задачи</th>
                     <td th:text="${task.description}"></td>
+                </tr>
+                <tr>
+                    <th>Приоритет</th>
+                    <td th:text="${task.priority.name}"></td>
                 </tr>
                 <tr>
                     <th>Статус задачи/выполение</th>

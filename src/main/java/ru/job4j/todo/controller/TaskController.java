@@ -7,11 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.todo.model.Task;
 import ru.job4j.todo.model.User;
+import ru.job4j.todo.service.PriorityServiceInterface;
 import ru.job4j.todo.service.TaskServiceInterface;
-
 import javax.servlet.http.HttpSession;
-
-import java.util.Optional;
 
 import static ru.job4j.todo.util.GetUser.getUser;
 
@@ -26,6 +24,7 @@ import static ru.job4j.todo.util.GetUser.getUser;
 public class TaskController {
 
     private TaskServiceInterface taskService;
+    private PriorityServiceInterface priorityService;
 
     /**
      * метод возвращает вид со списком всех заданий
@@ -96,6 +95,7 @@ public class TaskController {
      */
     @GetMapping("/add")
     public String add(Model model, HttpSession httpSession) {
+        model.addAttribute("priorities", priorityService.findAll());
         getUser(model, httpSession);
         return "tasks/add";
     }
@@ -131,6 +131,7 @@ public class TaskController {
             httpSession.setAttribute("message", "Ошибка при отображении задания!");
             return "redirect:/tasks/showMessage";
         }
+        model.addAttribute("priorities", priorityService.findAll());
         getUser(model, httpSession);
         return "tasks/update";
     }

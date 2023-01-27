@@ -52,6 +52,12 @@
                         </label>
                     </div>
                     <div class="form-group">
+                        <label for="priority.id" class="col">Priority</label>
+                        <select class="form-control" name="priority.id" id="priority.id">
+                            <option th:each="priority : ${priorities}" th:value="${priority.id}" th:text="${priority.name}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label style="width: 100%">Описание задания
                             <textarea class="form-control" rows="10" name="description" th:field="*{description}"></textarea>
                         </label>
