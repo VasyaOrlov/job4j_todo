@@ -64,6 +64,11 @@ public class CRUDRepository implements CRUDRepositoryInterface {
     }
 
     @Override
+    public <T> boolean total(Function<Session, Boolean> function) {
+        return tx(function);
+    }
+
+    @Override
     public <T> List<T> list(String query, Class<T> cl) {
         Function<Session, List<T>> command = session -> {
             var sq = session

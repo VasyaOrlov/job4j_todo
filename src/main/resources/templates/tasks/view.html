@@ -54,6 +54,14 @@
                     <td th:text="${task.priority.name}"></td>
                 </tr>
                 <tr>
+                    <th>Категория</th>
+                    <td>
+                        <span th:each="category: ${task.categories}" >
+                            <p th:text="${category.name}"></p>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
                     <th>Статус задачи/выполение</th>
                     <td>
                         <span th:if="${task.done}">

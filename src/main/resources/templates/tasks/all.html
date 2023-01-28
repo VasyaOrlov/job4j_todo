@@ -49,6 +49,7 @@
                     <th scope="col">#</th>
                     <th scope="col">Название</th>
                     <th scope="col">Приоритет</th>
+                    <th scope="col">Категория</th>
                     <th scope="col">Пользователь</th>
                     <th scope="col">Дата создания</th>
                     <th scope="col">Статус</th>
@@ -59,6 +60,11 @@
                     <td th:text="${task.id}"></td>
                     <td><a th:text="${task.name}" th:href="@{/tasks/view/{id}(id=${task.id})}"></a></td>
                     <td th:text="${task.priority.name}"></td>
+                    <td>
+                        <span th:each="category: ${task.categories}" >
+                            <p th:text="${category.name}"></p>
+                        </span>
+                    </td>
                     <td th:text="${task.user.name}"></td>
                     <td th:text="${#temporals.format(task.created, 'dd-MM-yyyy HH:mm')}"></td>
                     <td th:if="${task.done}" style="color: green">Выполнено</td>

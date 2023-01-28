@@ -5,11 +5,15 @@ import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Task;
 import ru.job4j.todo.model.User;
+import ru.job4j.todo.service.CategoryServiceInterface;
 import ru.job4j.todo.service.PriorityServiceInterface;
 import ru.job4j.todo.service.TaskServiceInterface;
 import javax.servlet.http.HttpSession;
+
+import java.util.List;
 
 import static ru.job4j.todo.util.GetUser.getUser;
 
@@ -25,6 +29,7 @@ public class TaskController {
 
     private TaskServiceInterface taskService;
     private PriorityServiceInterface priorityService;
+    private CategoryServiceInterface categoryService;
 
     /**
      * метод возвращает вид со списком всех заданий
@@ -96,6 +101,7 @@ public class TaskController {
     @GetMapping("/add")
     public String add(Model model, HttpSession httpSession) {
         model.addAttribute("priorities", priorityService.findAll());
+        model.addAttribute("categories", categoryService.findAll());
         getUser(model, httpSession);
         return "tasks/add";
     }
@@ -106,9 +112,17 @@ public class TaskController {
      * @return - вид со всеми заданиями
      */
     @PostMapping("/create")
-    public String create(@ModelAttribute Task task, HttpSession httpSession) {
+    public String create(@ModelAttribute Task task,
+                         @RequestParam("category.id") List<Integer> listId,
+                         HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
         task.setUser(user);
+        List<Category> categories = categoryService.findByID(listId);
+        if (categories.isEmpty()) {
+            httpSession.setAttribute("message", "Ошибка при добавлении задания!");
+            return "redirect:/tasks/showMessage";
+        }
+        task.setCategories(categories);
         if (taskService.add(task).isEmpty()) {
             httpSession.setAttribute("message", "Ошибка при добавлении задания!");
             return "redirect:/tasks/showMessage";
@@ -132,6 +146,7 @@ public class TaskController {
             return "redirect:/tasks/showMessage";
         }
         model.addAttribute("priorities", priorityService.findAll());
+        model.addAttribute("categories", categoryService.findAll());
         getUser(model, httpSession);
         return "tasks/update";
     }
@@ -143,8 +158,17 @@ public class TaskController {
      * @return - вид с результатом обновления
      */
     @PostMapping("/update")
-    public String updateTask(@ModelAttribute Task task, HttpSession httpSession) {
-        System.out.println(task.isDone());
+    public String updateTask(@ModelAttribute Task task,
+                             @RequestParam("category.id") List<Integer> listId,
+                             HttpSession httpSession) {
+        List<Category> categories = categoryService.findByID(listId);
+        if (categories.isEmpty()) {
+            httpSession.setAttribute("message", "Ошибка при обновлении задания!");
+            return "redirect:/tasks/showMessage";
+        }
+        task.setCategories(categories);
+        User user = (User) httpSession.getAttribute("user");
+        task.setUser(user);
         boolean rsl = taskService.update(task);
         if (!rsl) {
             httpSession.setAttribute("message", "Ошибка при обновлении задания!");

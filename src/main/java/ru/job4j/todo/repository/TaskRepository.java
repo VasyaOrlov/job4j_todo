@@ -21,14 +21,13 @@ public class TaskRepository implements TaskRepositoryInterface {
 
     private CRUDRepositoryInterface crudRepository;
     private static final Logger LOG = LoggerFactory.getLogger(TaskRepository.class.getName());
-    private static final String UPDATE =
-            "update Task set name = :fName, description = :fDesc, "
-                    + "created = :fCreated, done = :fDone where id = :fId";
-
     private static final String DELETE = "delete Task where id =:fId";
-    private static final String FIND_BY_ID = "from Task f JOIN FETCH f.priority where f.id = :fId";
-    private static final String FIND_ALL = "from Task f JOIN FETCH f.priority";
-    private static final String FIND_DONE = "from Task f JOIN FETCH f.priority where done = :fDone";
+    private static final String FIND_BY_ID = "from Task f JOIN FETCH f.priority "
+            + "JOIN FETCH f.categories where f.id = :fId";
+    private static final String FIND_ALL = "from Task f JOIN FETCH f.priority "
+            + "JOIN FETCH f.categories";
+    private static final String FIND_DONE = "from Task f JOIN FETCH f.priority "
+            + "JOIN FETCH f.categories where done = :fDone";
     private static final String DONE_TRUE = "update Task set done = true where id = :fId";
 
     /**
@@ -57,13 +56,7 @@ public class TaskRepository implements TaskRepositoryInterface {
     public boolean update(Task task) {
         boolean rsl = false;
         try {
-            rsl = crudRepository.total(UPDATE, Map.of(
-                    "fName", task.getName(),
-                    "fDesc", task.getDescription(),
-                    "fCreated", task.getCreated(),
-                    "fDone", task.isDone(),
-                    "fId", task.getId()
-            ));
+            rsl = crudRepository.total(session -> session.merge(task).equals(task));
         } catch (Exception e) {
             LOG.error("Ошибка изменения задачи: " + e);
         }
