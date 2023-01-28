@@ -12,7 +12,7 @@ import java.util.Optional;
 @Service
 @ThreadSafe
 @AllArgsConstructor
-public class PriorityService implements PriorityServiceInterface{
+public class PriorityService implements PriorityServiceInterface {
 
     private PriorityRepositoryInterface priorityRepository;
 
