@@ -129,7 +129,7 @@ public class TaskController {
         User user = (User) httpSession.getAttribute("user");
         task.setUser(user);
         List<Category> categories = categoryService.findByID(listId);
-        if (categories.isEmpty()) {
+        if (categories.isEmpty() || categories.size() != listId.size()) {
             httpSession.setAttribute("message", "Ошибка при добавлении задания!");
             return "redirect:/tasks/showMessage";
         }
@@ -173,7 +173,7 @@ public class TaskController {
                              @RequestParam("category.id") List<Integer> listId,
                              HttpSession httpSession) {
         List<Category> categories = categoryService.findByID(listId);
-        if (categories.isEmpty()) {
+        if (categories.isEmpty() || categories.size() != listId.size()) {
             httpSession.setAttribute("message", "Ошибка при обновлении задания!");
             return "redirect:/tasks/showMessage";
         }

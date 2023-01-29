@@ -24,9 +24,9 @@ public class TaskRepository implements TaskRepositoryInterface {
     private static final String DELETE = "delete Task where id =:fId";
     private static final String FIND_BY_ID = "from Task f JOIN FETCH f.priority "
             + "JOIN FETCH f.categories where f.id = :fId";
-    private static final String FIND_ALL = "from Task f JOIN FETCH f.priority "
+    private static final String FIND_ALL = "select distinct f from Task f JOIN FETCH f.priority "
             + "JOIN FETCH f.categories";
-    private static final String FIND_DONE = "from Task f JOIN FETCH f.priority "
+    private static final String FIND_DONE = "select distinct f from Task f JOIN FETCH f.priority "
             + "JOIN FETCH f.categories where done = :fDone";
     private static final String DONE_TRUE = "update Task set done = true where id = :fId";
 
