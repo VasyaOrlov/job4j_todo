@@ -16,6 +16,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class TaskService implements TaskServiceInterface {
     private TaskRepositoryInterface taskRepository;
+    private PriorityServiceInterface priorityService;
 
     /**
      * метод добавляет задание в хранилище
@@ -24,6 +25,9 @@ public class TaskService implements TaskServiceInterface {
      */
     @Override
     public Optional<Task> add(Task task) {
+        if (priorityService.findById(task.getPriority().getId()).isEmpty()) {
+            return Optional.empty();
+        }
         return taskRepository.add(task);
     }
 
@@ -34,6 +38,9 @@ public class TaskService implements TaskServiceInterface {
      */
     @Override
     public boolean update(Task task) {
+        if (priorityService.findById(task.getPriority().getId()).isEmpty()) {
+            return false;
+        }
         return taskRepository.update(task);
     }
 
