@@ -13,6 +13,8 @@ import ru.job4j.todo.service.PriorityServiceInterface;
 import ru.job4j.todo.service.TaskServiceInterface;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Optional;
+
 import static ru.job4j.todo.util.GetUser.getUser;
 import static ru.job4j.todo.util.TimeZoneUser.setTimeZone;
 
@@ -39,9 +41,7 @@ public class TaskController {
     @GetMapping("/all")
     public String all(Model model, HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
-        List<Task> tasks = taskService.findAll();
-        tasks.forEach(e -> setTimeZone(user, e));
-        model.addAttribute("tasks", tasks);
+        model.addAttribute("tasks", taskService.findAll(user));
         model.addAttribute("header", "Все задания");
         getUser(model, httpSession);
         return "tasks/all";
@@ -56,9 +56,7 @@ public class TaskController {
     @GetMapping("/doneTrue")
     public String doneTrue(Model model, HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
-        List<Task> tasks = taskService.findByDone(true);
-        tasks.forEach(e -> setTimeZone(user, e));
-        model.addAttribute("tasks", tasks);
+        model.addAttribute("tasks", taskService.findByDone(true, user));
         model.addAttribute("header", "Выполненные задания");
         getUser(model, httpSession);
         return "tasks/all";
@@ -73,9 +71,7 @@ public class TaskController {
     @GetMapping("/doneFalse")
     public String doneFalse(Model model, HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
-        List<Task> tasks = taskService.findByDone(false);
-        tasks.forEach(e -> setTimeZone(user, e));
-        model.addAttribute("tasks", tasks);
+        model.addAttribute("tasks", taskService.findByDone(false, user));
         model.addAttribute("header", "Актуальные задания");
         getUser(model, httpSession);
         return "tasks/all";
@@ -91,14 +87,14 @@ public class TaskController {
     @GetMapping("/view/{id}")
     public String view(@PathVariable int id, Model model, HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
-        try {
-            Task task = taskService.findById(id).get();
-            setTimeZone(user, task);
-            model.addAttribute("task", task);
-        } catch (Exception e) {
+        Optional<Task> opTask = taskService.findById(id, user);
+        if (opTask.isEmpty()) {
             httpSession.setAttribute("message", "Ошибка при отображении задания!");
             return "redirect:/tasks/showMessage";
         }
+        Task task = opTask.get();
+        setTimeZone(user, task);
+        model.addAttribute("task", task);
         getUser(model, httpSession);
         return "tasks/view";
     }
@@ -150,12 +146,13 @@ public class TaskController {
      */
     @GetMapping("/update/{id}")
     public String updateView(@PathVariable int id, Model model, HttpSession httpSession) {
-        try {
-            model.addAttribute("task", taskService.findById(id).get());
-        } catch (Exception e) {
-            httpSession.setAttribute("message", "Ошибка при отображении задания!");
+        User user = (User) httpSession.getAttribute("user");
+        Optional<Task> opTask = taskService.findById(id, user);
+        if (opTask.isEmpty()) {
+            httpSession.setAttribute("message", "Ошибка при редактировании задания!");
             return "redirect:/tasks/showMessage";
         }
+        model.addAttribute("task", opTask.get());
         model.addAttribute("priorities", priorityService.findAll());
         model.addAttribute("categories", categoryService.findAll());
         getUser(model, httpSession);

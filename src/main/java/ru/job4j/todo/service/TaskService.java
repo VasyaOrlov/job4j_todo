@@ -3,10 +3,13 @@ package ru.job4j.todo.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.job4j.todo.model.Task;
+import ru.job4j.todo.model.User;
 import ru.job4j.todo.repository.TaskRepositoryInterface;
 
 import java.util.List;
 import java.util.Optional;
+
+import static ru.job4j.todo.util.TimeZoneUser.setTimeZone;
 
 /**
  * класс TaskService реализует интерфейс TaskServiceInterface
@@ -59,8 +62,10 @@ public class TaskService implements TaskServiceInterface {
      * @return - список заданий
      */
     @Override
-    public List<Task> findAll() {
-        return taskRepository.findAll();
+    public List<Task> findAll(User user) {
+        List<Task> tasks = taskRepository.findAll();
+        tasks.forEach(e -> setTimeZone(user, e));
+        return tasks;
     }
 
     /**
@@ -69,8 +74,10 @@ public class TaskService implements TaskServiceInterface {
      * @return - Optional с результатом поиска задания
      */
     @Override
-    public Optional<Task> findById(int id) {
-        return taskRepository.findById(id);
+    public Optional<Task> findById(int id, User user) {
+        Optional<Task> opTask = taskRepository.findById(id);
+        opTask.ifPresent(task -> setTimeZone(user, task));
+        return opTask;
     }
 
     /**
@@ -79,8 +86,10 @@ public class TaskService implements TaskServiceInterface {
      * @return - список заданий
      */
     @Override
-    public List<Task> findByDone(boolean done) {
-        return taskRepository.findByDone(done);
+    public List<Task> findByDone(boolean done, User user) {
+        List<Task> tasks = taskRepository.findByDone(done);
+        tasks.forEach(e -> setTimeZone(user, e));
+        return tasks;
     }
 
     /**

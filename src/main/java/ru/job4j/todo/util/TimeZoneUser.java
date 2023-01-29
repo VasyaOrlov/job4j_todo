@@ -13,11 +13,12 @@ public class TimeZoneUser {
     public static void setTimeZone(User user, Task task) {
         ZonedDateTime time;
         if (user.getUserZone() == null) {
-            time = task.getCreated().withZoneSameInstant(TimeZone.getDefault().toZoneId());
+            time = ZonedDateTime.of(task.getCreated(), TimeZone.getDefault().toZoneId());
         } else {
-            time = task.getCreated().withZoneSameInstant(ZoneId.of(user.getUserZone()));
+            time = ZonedDateTime.of(task.getCreated(), TimeZone.getDefault().toZoneId())
+                    .withZoneSameInstant(ZoneId.of(user.getUserZone()));
         }
-        task.setCreated(time);
+        task.setCreated(time.toLocalDateTime());
     }
 
     public static List<TimeZone> getZone() {
