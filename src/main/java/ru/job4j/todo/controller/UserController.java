@@ -10,11 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.job4j.todo.model.User;
 import ru.job4j.todo.service.UserServiceInterface;
-
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
-
 import static ru.job4j.todo.util.GetUser.getUser;
+import static ru.job4j.todo.util.TimeZoneUser.getZone;
 
 @Controller
 @ThreadSafe
@@ -32,6 +31,7 @@ public class UserController {
      */
     @GetMapping("/registration")
     public String registration(Model model, HttpSession httpSession) {
+        model.addAttribute("userZones", getZone());
         getUser(model, httpSession);
         return "users/registration";
     }

@@ -18,4 +18,5 @@
     <include file="scripts/008_ddl_create_categories_table.sql" relativeToChangelogFile="true"/>
     <include file="scripts/009_dml_insert_categories.sql" relativeToChangelogFile="true"/>
     <include file="scripts/010_ddl_create_task_categories_table.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/011_ddl_add_column_user_zone_in_users_table.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

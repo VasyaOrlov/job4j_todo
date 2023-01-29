@@ -63,6 +63,15 @@
                                 <input type="text" class="form-control" name="name">
                             </label>
                         </div>
+                        <div class="form-group">
+                            <label for="userZone.id">выберите часовой пояс</label>
+                            <select class="form-control" name="userZone" id="userZone.id">
+                                <option th:each="userZone : ${userZones}"
+                                        th:value="${userZone.getID()}"
+                                        th:text="${userZone.getDisplayName()}" >
+                                </option>
+                            </select>
+                        </div>
                         <button type="submit" class="btn btn-primary">Сохранить</button>
                     </form>
                 </div>
